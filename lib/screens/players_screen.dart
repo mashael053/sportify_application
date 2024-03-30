@@ -6,7 +6,7 @@ class players_screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(100, 161, 195, 152)),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 161, 195, 152)),
     );
   }
 }
