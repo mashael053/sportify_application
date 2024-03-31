@@ -15,7 +15,7 @@ class players_screen extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: Column(children: [
             Center(child: searchfield()),
-            for (int i = 0; i < 10; i++) players(_screen)
+            for (int i = 0; i < 10; i++) players(_screen, context)
           ]),
         ));
   }
