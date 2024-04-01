@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/widget/playerinfo_widget.dart';
+import 'package:sportify_application/widget/playerInfo_widget.dart';
 
 Widget players(var _screen, BuildContext context) {
   return InkWell(
     onTap: () {
-      showplayerInfoBottomSheet(context);
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) =>
+              //showplayerInfoBottomSheet(context);
+              BottomSheetContent());
     },
     child: Padding(
       padding: const EdgeInsets.only(bottom: 10),
