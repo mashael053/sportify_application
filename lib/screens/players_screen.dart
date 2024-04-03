@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/getPlayer_model.dart';
@@ -110,3 +111,4 @@ class _players_screenState extends State<players_screen> {
     );
   }
 }
+
