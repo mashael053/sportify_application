@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/getPlayer_model.dart';
-import 'package:sportify_application/screens/empty.dart';
 import 'package:sportify_application/utils/style.dart';
 import '../widget/drwaer.dart';
 import '../widget/player_widget.dart';

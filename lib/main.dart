@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/empty.dart';
 import 'package:sportify_application/screens/players_screen.dart';
 
 void main() {
@@ -19,7 +18,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: MyWidget(),
     );
   }
 }
