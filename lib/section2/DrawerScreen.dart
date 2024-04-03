@@ -33,7 +33,7 @@ Widget drawer() {
                         ),
                   ),
                   ListTile(
-                    title: const Text('Mashael Ali'),
+                    title: const Text('Mashael '),
                     onTap: () {},
                   ),
                 ],
@@ -45,7 +45,7 @@ Widget drawer() {
           padding: const EdgeInsets.all(13.0),
           child: ElevatedButton(
             onPressed: () {
-              
+
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFA1C398),
