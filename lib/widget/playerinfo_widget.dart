@@ -61,49 +61,49 @@ class _playerInfo extends State<playerInfo>
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 10),
-          Row(
-            children: [
-              Text(
-                "Player Info",
-                style: text_style3,
-              ),
-              Spacer(), // Use Spacer to push the InkWell to the right
-              InkWell(
-                onTap: () {
-                  shareApp(
-                      result_playerInfo.playerName, result_playerInfo.teamName);
-                },
-                child: Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(255, 161, 195, 152),
-                  ),
-                  child: Icon(
-                    Icons.ios_share,
-                    color: Colors.black,
-                  ),
+      child: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                  color: Color.fromARGB(
+                      255, 1, 19, 33))) // Show progress indicator while loading
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      "Player Info",
+                      style: text_style3,
+                    ),
+                    Spacer(), // Use Spacer to push the InkWell to the right
+                    InkWell(
+                      onTap: () {
+                        shareApp(result_playerInfo.playerName,
+                            result_playerInfo.teamName);
+                      },
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(255, 161, 195, 152),
+                        ),
+                        child: Icon(
+                          Icons.ios_share,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          line,
-          SizedBox(height: 10),
-          isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                      color: Color.fromARGB(255, 1, 19,
-                          33))) // Show progress indicator while loading
-              : Container(
+                SizedBox(
+                  height: 10,
+                ),
+                line,
+                SizedBox(height: 10),
+                Container(
                   height: _screensize.height * 0.25,
                   width: _screensize.width * 0.95,
                   decoration: BoxDecoration(
@@ -115,28 +115,28 @@ class _playerInfo extends State<playerInfo>
                     ),
                   ),
                 ),
-          SizedBox(height: 10),
-          TabBar(
-            indicatorColor: Color.fromARGB(255, 250, 112, 112),
-            labelColor: Color.fromARGB(255, 250, 112, 112),
-            controller: _tabController,
-            unselectedLabelColor: Colors.grey,
-            tabs: [
-              Tab(icon: Icon(Icons.person)),
-              Tab(icon: Icon(Icons.sports_soccer)),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                InformationTab(result_playerInfo),
-                StatsTab(result_playerInfo),
+                SizedBox(height: 10),
+                TabBar(
+                  indicatorColor: Color.fromARGB(255, 250, 112, 112),
+                  labelColor: Color.fromARGB(255, 250, 112, 112),
+                  controller: _tabController,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: [
+                    Tab(icon: Icon(Icons.person)),
+                    Tab(icon: Icon(Icons.sports_soccer)),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      InformationTab(result_playerInfo),
+                      StatsTab(result_playerInfo),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
