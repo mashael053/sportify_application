@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sportify_application/data/global_variables.dart';
+import 'package:sportify_application/screens/login_screen.dart';
 
-Widget drawer() {
+Widget drawer(BuildContext context) {
   return Container(
     color: Colors.white, // Set the background color to white
     child: ListView(
@@ -26,21 +28,24 @@ Widget drawer() {
                     accountEmail: null,
                     currentAccountPicture: CircleAvatar(
                       backgroundImage: AssetImage(
-                          'assest/icon-profile.jpg'), // Fix typo in asset path
+                          'assets/icon-profile.jpg'), // Fix typo in asset path
                     ),
                     decoration: BoxDecoration(),
                   ),
-                  ListTile(
-                    title: const Text('Mashael Ali'),
-                    onTap: () {},
-                  ),
+                  if (loggedInWithGoogle)
+                    ListTile(
+                      title: Text("$firstName $lastName"),
+                      onTap: () {},
+                    )
+                  else
+                    ListTile(title: Text("$phoneNumber"), onTap: () {}),
                 ],
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(13.0),
+          padding: EdgeInsets.all(13.0),
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -56,14 +61,19 @@ Widget drawer() {
             ),
             child: SizedBox(
               height: 30,
-              child: const Text(
-                'Log Out',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
             ),
           ),
         ),

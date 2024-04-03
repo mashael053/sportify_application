@@ -14,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController phoneNumberController = TextEditingController();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
 
@@ -48,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                   child: TextField(
+                    controller: phoneNumberController,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
                       border: OutlineInputBorder(
@@ -69,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: () {
 // Generate and show OTP
+
                             setState(() {
                               generatedOTP = generateOTP();
                             });
@@ -114,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: SizedBox(
                         height: 50,
                         child: TextField(
+                          controller: otpController,
                           decoration: InputDecoration(
                             labelText: 'Enter OTP',
                             border: OutlineInputBorder(
@@ -170,7 +175,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Homepage(),
+                            builder: (context) => Homepage(
+                              firstName_user:
+                                  googleUser.displayName!.split(" ")[0],
+                              lastName_user:
+                                  googleUser.displayName!.split(" ")[1],
+                            ),
                           ),
                         );
                       }
@@ -201,12 +211,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Method to handle OTP verification
   void verifyOTP() {
+    print("what we write ${otpController.text}, what we get $generatedOTP");
+
     if (otpController.text == generatedOTP) {
       // Navigate to home screen if OTP is correct
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Homepage(),
+          builder: (context) => Homepage(
+            phoneNumber_user: phoneNumberController.text,
+          ),
         ),
       );
       print('OTP Verified. Navigate to Home Screen');
