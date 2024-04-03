@@ -32,6 +32,11 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   dio: ^4.0.0
+  google_fonts: ^6.2.1
+  google_sign_in: ^6.2.1
+  page_view_indicators: ^2.0.0
+  country_picker: ^2.0.25
+  flutter_share: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
