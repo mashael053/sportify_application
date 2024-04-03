@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:sportify_application/screens/Data/models/team_model.dart';
+import 'package:sportify_application/data/models/team_model.dart';
 
 class TeamsApiService {
   static Dio _dio = Dio();

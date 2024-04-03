@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/Data/models/league_model.dart';
-import 'package:sportify_application/screens/Data/repositories/League_api_service.dart';
+import 'package:sportify_application/data/models/league_model.dart';
+import 'package:sportify_application/data/repositories/league_api_service.dart';
 import 'package:sportify_application/screens/top_and_teams_screen.dart';
 
 class LeaguesScreen extends StatefulWidget {
+  final String countryKey;
+
+  LeaguesScreen({required this.countryKey});
+
   @override
   _LeaguesScreenState createState() => _LeaguesScreenState();
 }
@@ -18,11 +22,12 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
   }
 
   Future<void> fetchLeagues() async {
-    final fetchedLeagues = await LeagueApiService.fetchLeagues();
-    setState(() {
-      leagues = fetchedLeagues;
-    });
-  }
+  final fetchedLeagues = await LeagueApiService.fetchLeagues(widget.countryKey);
+  setState(() {
+    leagues = fetchedLeagues;
+  });
+}
+
 
   Widget buildLeagueTile(League league) {
     return Container(
@@ -66,10 +71,10 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
                     league.leagueName,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    league.countryName,
-                    style: TextStyle(color: Colors.black54),
-                  ),
+                  // Text(
+                  //   league.countryName,
+                  //   style: TextStyle(color: Colors.black54),
+                  // ),
                 ],
               ),
             ),
@@ -87,6 +92,7 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
         centerTitle: true,
         backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
       ),
+      
       body: ListView.builder(
         itemCount: leagues.length,
         itemBuilder: (context, index) {
@@ -98,6 +104,7 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
           final league = leagues[index];
           return buildLeagueTile(league);
         },
+        
       ),
     );
   }
