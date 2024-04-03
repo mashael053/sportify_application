@@ -17,15 +17,10 @@ class TopAndTeamsScreen extends StatefulWidget {
 }
 
 class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
-  late Future<List<Team>> _teamsFuture;
+  //late Future<List<Team>> _teamsFuture;
   late Future<List<TopScorer>> _topScorersFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _teamsFuture = TeamsApiService.fetchTeams(widget.leagueKey);
-    _topScorersFuture = TopScorersApiService.fetchTopScorers(widget.leagueKey);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
         ),
         body: TabBarView(
           children: [
-            TeamsScreen(leagueId: widget.leagueKey, teamsFuture: _teamsFuture),
+            TeamsScreen(leagueId: widget.leagueKey),
             TopScorersScreen(leagueId: widget.leagueKey, topScorersFuture: _topScorersFuture),
           ],
         ),

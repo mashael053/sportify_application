@@ -28,7 +28,9 @@ Widget drawer() {
                       backgroundImage: AssetImage(
                           'assest/icon-profile.jpg'), // Fix typo in asset path
                     ),
-                    decoration: BoxDecoration(),
+                    decoration: BoxDecoration(
+// color: const Color(0xFFA1C398),
+                        ),
                   ),
                   ListTile(
                     title: const Text('Mashael Ali'),

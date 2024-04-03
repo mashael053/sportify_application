@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sportify_application/data/models/team_model.dart';
-
+import 'package:sportify_application/data/repositories/team_api_service.dart';
 class TeamsScreen extends StatefulWidget {
   final int leagueId;
-  final Future<List<Team>> teamsFuture;
 
-  TeamsScreen({required this.leagueId, required this.teamsFuture});
+  TeamsScreen({required this.leagueId});
 
   @override
   _TeamsScreenState createState() => _TeamsScreenState();
@@ -14,11 +13,12 @@ class TeamsScreen extends StatefulWidget {
 class _TeamsScreenState extends State<TeamsScreen> {
   late Future<List<Team>> _teamsFuture;
   late List<Team> _filteredTeams = [];
+  final TeamModelService _teamModelService = TeamModelService(); // Create an instance of the TeamModelService class
 
   @override
   void initState() {
     super.initState();
-    _teamsFuture = widget.teamsFuture;
+    _teamsFuture = _teamModelService.fetchTeamData(widget.leagueId.toString()); // Fetch teams using the leagueId
   }
 
   void _filterTeams(String query) {
@@ -26,7 +26,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
       _filteredTeams = [];
     });
 
-    widget.teamsFuture.then((teams) {
+    _teamsFuture.then((teams) {
       setState(() {
         _filteredTeams = teams
             .where((team) =>
