@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sportify_application/section2/homePage.dart';
+
+import '../data/global_variables.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,10 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -163,17 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () async {
                       final GoogleSignInAccount? googleUser =
-                          await _googleSignIn.signIn();
+                          await googleSignIn.signIn();
+                      loggedInWithGoogle = true;
                       if (googleUser != null) {
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => HomeScreen(
-                        //       firstName: googleUser.displayName!.split(" ")[0],
-                        //       lastName: googleUser.displayName!.split(" ")[1],
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Homepage(),
+                          ),
+                        );
                       }
                     },
                     child: Text('Login with Google',
@@ -204,15 +203,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void verifyOTP() {
     if (otpController.text == generatedOTP) {
       // Navigate to home screen if OTP is correct
-      // Replace this with your navigation logic
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => HomeScreen(
-      //       phoneNumber: phoneNumberController.text,
-      //     ),
-      //   ),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Homepage(),
+        ),
+      );
       print('OTP Verified. Navigate to Home Screen');
     } else {
       // Show error message if OTP is incorrect
