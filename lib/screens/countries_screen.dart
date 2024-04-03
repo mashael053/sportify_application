@@ -37,12 +37,15 @@ class _CountriesScreenState extends State<CountriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sportify', style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Sportify',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
         centerTitle: true,
       ),
       drawer: Drawer(
-        child: drawer(),
+        child: drawer(context),
       ),
       body: Column(
         children: [
@@ -50,7 +53,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
             height: 10,
           ),
           Padding(
-            padding:  EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Row(
               children: [
                 ClipRRect(
@@ -75,33 +78,29 @@ class _CountriesScreenState extends State<CountriesScreen> {
                     ),
                   ),
                 ),
-
-                
               ],
             ),
           ),
-
-                  SizedBox(
+          SizedBox(
             height: 10,
-        
           ),
-Container(
-  height: 60,
-  width: 320,
-  child: TextField(
-    decoration: InputDecoration(
-      labelText: 'Search for a country',
-      suffixIcon: Icon(Icons.search),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black38),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-    ),
-  ),
-),
+          Container(
+            height: 60,
+            width: 320,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Search for a country',
+                suffixIcon: Icon(Icons.search),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black38),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: GridView.builder(
               controller: _scrollController,
@@ -117,12 +116,12 @@ Container(
                 final isCurrentCountry = index == currentCountryIndex;
                 return GestureDetector(
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //        builder: (context) => LeaguesScreen(countryKey: country.countryKey),
-                    //      ),
-                    //   );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LeaguesScreen(),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(

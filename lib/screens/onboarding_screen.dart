@@ -34,77 +34,79 @@ class _OnboardingState extends State<OnBoarding> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPageIndex = index;
-                _currentPageNotifier.value =
-                    _currentPageIndex; // Update the indicator
-              });
-            },
-            children: [
-              OnboardingPage(
-                image: 'assets/OnBoarding1.png',
-                title: 'Welcome to Our App!',
-                description:
-                    'Discover amazing features and enjoy using our app.',
-              ),
-              OnboardingPage(
-                image: 'assets/OnBoarding2.png',
-                title: 'Explore Our Features',
-                description:
-                    'Explore football, basketball, cricket, and tennis with real-time updates and much more!',
-              ),
-              OnboardingPage(
-                image: 'assets/OnBoarding3.png',
-                title: 'Get Started Now!',
-                description:
-                    'Join us today and experience a new way of using apps.',
-              ),
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 60.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Color(0xFFA1C398), // Button color set to A1C398
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                  _currentPageNotifier.value =
+                      _currentPageIndex; // Update the indicator
+                });
+              },
+              children: [
+                OnboardingPage(
+                  image: 'assets/OnBoarding1.png',
+                  title: 'Welcome to Our App!',
+                  description:
+                      'Discover amazing features and enjoy using our app.',
                 ),
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    color: Colors.black, // Text color set to black
+                OnboardingPage(
+                  image: 'assets/OnBoarding2.png',
+                  title: 'Explore Our Features',
+                  description:
+                      'Explore football, basketball, cricket, and tennis with real-time updates and much more!',
+                ),
+                OnboardingPage(
+                  image: 'assets/OnBoarding3.png',
+                  title: 'Get Started Now!',
+                  description:
+                      'Join us today and experience a new way of using apps.',
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 60.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Color(0xFFA1C398), // Button color set to A1C398
+                  ),
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      color: Colors.black, // Text color set to black
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom:
-                200.0, // Adjust this value to change the position of the page indicator
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.only(top: 20.0), // Add padding to the top
-              child: CirclePageIndicator(
-                itemCount: 3,
-                currentPageNotifier: _currentPageNotifier,
+            Positioned(
+              bottom:
+                  200.0, // Adjust this value to change the position of the page indicator
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.only(top: 20.0), // Add padding to the top
+                child: CirclePageIndicator(
+                  itemCount: 3,
+                  currentPageNotifier: _currentPageNotifier,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

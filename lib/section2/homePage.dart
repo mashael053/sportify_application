@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:sportify_application/screens/countries_screen.dart';
 import 'package:sportify_application/section2/DrawerScreen.dart';
+import 'package:sportify_application/data/global_variables.dart';
 
 class Homepage extends StatelessWidget {
-  const Homepage({Key? key});
+  String? firstName_user;
+  String? lastName_user;
+  String? phoneNumber_user;
+  Homepage({
+    Key? key,
+    this.firstName_user,
+    this.lastName_user,
+    this.phoneNumber_user,
+  });
 
   @override
   Widget build(BuildContext context) {
+    firstName = firstName_user;
+    lastName = lastName_user;
+    phoneNumber = phoneNumber_user;
+    print("phone $phoneNumber");
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sportify', style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Sportify',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
         centerTitle: true,
       ),
       drawer: Drawer(
-        child: drawer(),
+        child: drawer(context),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,8 +51,8 @@ class Homepage extends StatelessWidget {
             children: [
               Expanded(
                 child: ListPlay(
-                      Color.fromARGB(66, 198, 235, 197),
-                  "assest/footballHomepage.png",
+                  Color.fromARGB(66, 198, 235, 197),
+                  "assets/footballHomepage.png",
                   "Football",
                   () {
                     // Add the code to navigate to the country page here
@@ -51,18 +67,26 @@ class Homepage extends StatelessWidget {
               SizedBox(width: 30),
               Expanded(
                 child: ListPlay(
-      Color.fromARGB(66, 198, 235, 197),
-                  "assest/basketballHomepage.png",
+                  Color.fromARGB(66, 198, 235, 197),
+                  "assets/basketballHomepage.png",
                   "Basketball",
                   () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Coming Soon' ,style: TextStyle(color: Color(0xFFFA7070) , fontWeight: FontWeight.bold),),
+                          title: Text(
+                            'Coming Soon',
+                            style: TextStyle(
+                                color: Color(0xFFFA7070),
+                                fontWeight: FontWeight.bold),
+                          ),
                           content: Text(
-                            'Basketball is coming soon!' , 
-                            style: TextStyle(fontSize: 20 , color:Colors.black,),
+                            'Basketball is coming soon!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
                           ),
                           backgroundColor:
                               const Color.fromARGB(255, 255, 251, 251),
@@ -71,7 +95,11 @@ class Homepage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('OK', style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),
+                              child: Text(
+                                'OK',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
                             ),
                           ],
                         );
@@ -88,26 +116,40 @@ class Homepage extends StatelessWidget {
             children: [
               Expanded(
                 child: ListPlay(
-          Color.fromARGB(66, 198, 235, 197),
-                  "assest/cricetHomepage.png",
+                  Color.fromARGB(66, 198, 235, 197),
+                  "assets/cricetHomepage.png",
                   "Cricket",
                   () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Coming Soon' ,style: TextStyle(color: Color(0xFFFA7070) , fontWeight: FontWeight.bold),),
-                          content: Text('Cricket is coming soon!',
-                          style: TextStyle(fontSize: 20 , color:Colors.black,),
+                          title: Text(
+                            'Coming Soon',
+                            style: TextStyle(
+                                color: Color(0xFFFA7070),
+                                fontWeight: FontWeight.bold),
                           ),
-                            backgroundColor:
+                          content: Text(
+                            'Cricket is coming soon!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                          backgroundColor:
                               const Color.fromARGB(255, 255, 251, 251),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-  child: Text('OK' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),                            ),
+                              child: Text(
+                                'OK',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            ),
                           ],
                         );
                       },
@@ -118,28 +160,40 @@ class Homepage extends StatelessWidget {
               SizedBox(width: 30),
               Expanded(
                 child: ListPlay(
-            Color.fromARGB(66, 198, 235, 197),
-                  "assest/tennisHomepage.png",
+                  Color.fromARGB(66, 198, 235, 197),
+                  "assets/tennisHomepage.png",
                   "Tennis",
                   () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Coming Soon' ,style: TextStyle(color: Color(0xFFFA7070) , fontWeight: FontWeight.bold),),
-                          content: Text('Tennis is coming soon!' ,
-                          style: TextStyle(fontSize: 20 , color:Colors.black,),),
-
-                            backgroundColor:
+                          title: Text(
+                            'Coming Soon',
+                            style: TextStyle(
+                                color: Color(0xFFFA7070),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          content: Text(
+                            'Tennis is coming soon!',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                          backgroundColor:
                               const Color.fromARGB(255, 255, 251, 251),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                                child: Text('OK' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),                            ),
-
-                            
+                              child: Text(
+                                'OK',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            ),
                           ],
                         );
                       },
@@ -173,7 +227,6 @@ class ListPlay extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           height: 170,
-        
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
@@ -200,4 +253,3 @@ class ListPlay extends StatelessWidget {
     );
   }
 }
-

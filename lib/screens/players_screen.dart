@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/getPlayer_model.dart';
+import 'package:sportify_application/section2/DrawerScreen.dart';
 import 'package:sportify_application/utils/style.dart';
-import '../widget/drwaer.dart';
 import '../widget/player_widget.dart';
 
 class players_screen extends StatefulWidget {
@@ -55,7 +54,7 @@ class _players_screenState extends State<players_screen> {
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 161, 195, 152)),
       drawer: Drawer(
-        child: drawer(),
+        child: drawer(context),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -111,4 +110,3 @@ class _players_screenState extends State<players_screen> {
     );
   }
 }
-
