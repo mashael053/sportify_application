@@ -7,7 +7,7 @@ import 'package:sportify_application/widget/playerInfo_widget.dart';
 import '../utils/style.dart';
 
 Widget players(var _screen, BuildContext context, String imag_url, String name,
-    String postion, int player_key, String teamKey) {
+    String postion, String player_key, int teamKey) {
   return InkWell(
     onTap: () {
       showModalBottomSheet(
@@ -38,6 +38,13 @@ Widget players(var _screen, BuildContext context, String imag_url, String name,
                 ),
                 child: Image.network(
                   imag_url,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    // Handle the error here
+                    print('Image loading error: $exception');
+                    // Return a fallback widget
+                    return Image.asset('assets/player_icon.png');
+                  },
                   fit: BoxFit.cover,
                 ),
               ),
@@ -64,7 +71,7 @@ Widget players(var _screen, BuildContext context, String imag_url, String name,
                     ],
                   ),
                 )
-              ], //
+              ],
             )
           ],
         ),
@@ -72,8 +79,6 @@ Widget players(var _screen, BuildContext context, String imag_url, String name,
     ),
   );
 }
-
-
 
 
 
