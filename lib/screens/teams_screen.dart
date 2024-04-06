@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/Data/models/team_model.dart';
+import 'package:sportify_application/data/models/team_model.dart';
 import 'package:sportify_application/screens/players_screen.dart';
-import 'package:sportify_application/screens/Data/repositories/team_api_service.dart'; // Import the players screen
+import 'package:sportify_application/data/repositories/team_api_service.dart'; // Import the players screen
 
 class TeamsScreen extends StatefulWidget {
   final int leagueId;

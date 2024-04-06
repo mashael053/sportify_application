@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/Data/models/topscorer_model.dart';
+import 'package:sportify_application/data/models/topscorer_model.dart';
 
-import '../Data/repositories/top_scorers_api_service.dart';
+import '../data/repositories/top_scorers_api_service.dart';
 
 class TopScorersScreen extends StatefulWidget {
   final int leagueId;

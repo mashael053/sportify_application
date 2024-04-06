@@ -1,12 +1,12 @@
 // lib/screens/top_and_teams_screen.dart
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/Data/models/team_model.dart';
-import 'package:sportify_application/screens/Data/models/topscorer_model.dart';
-import 'package:sportify_application/screens/Data/repositories/team_api_service.dart';
-import 'package:sportify_application/screens/Data/repositories/top_scorers_api_service.dart';
-import 'package:sportify_application/screens/widgets/teams_screen.dart';
-import 'package:sportify_application/screens/widgets/top_scorers_screen.dart';
-import 'package:sportify_application/section2/DrawerScreen.dart';
+import 'package:sportify_application/data/models/team_model.dart';
+import 'package:sportify_application/data/models/topscorer_model.dart';
+import 'package:sportify_application/data/repositories/team_api_service.dart';
+import 'package:sportify_application/data/repositories/top_scorers_api_service.dart';
+import 'package:sportify_application/screens/teams_screen.dart';
+import 'package:sportify_application/screens/top_scorers_screen.dart';
+import 'package:sportify_application/widget/DrawerScreen.dart';
 
 class TopAndTeamsScreen extends StatefulWidget {
   final int leagueKey; // Define the leagueKey parameter here

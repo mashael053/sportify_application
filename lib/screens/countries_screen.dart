@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/countries_model.dart';
 import 'package:sportify_application/data/repositories/country_api_servie.dart';
 import 'package:sportify_application/screens/leagues_screen.dart';
-import 'package:sportify_application/section2/DrawerScreen.dart';
+import 'package:sportify_application/widget/DrawerScreen.dart';
 
 class CountriesScreen extends StatefulWidget {
   @override

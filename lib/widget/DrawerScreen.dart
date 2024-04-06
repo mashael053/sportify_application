@@ -3,6 +3,7 @@ import 'package:sportify_application/data/global_variables.dart';
 import 'package:sportify_application/screens/login_screen.dart';
 
 Widget drawer(BuildContext context) {
+  print(phoneNumber);
   return Container(
     color: Colors.white, // Set the background color to white
     child: ListView(
@@ -33,10 +34,7 @@ Widget drawer(BuildContext context) {
                     decoration: BoxDecoration(),
                   ),
                   if (loggedInWithGoogle)
-                    ListTile(
-                      title: Text("$firstName $lastName"),
-                      onTap: () {},
-                    )
+                    ListTile(title: Text("$firstName $lastName"), onTap: () {})
                   else
                     ListTile(title: Text("$phoneNumber"), onTap: () {}),
                 ],

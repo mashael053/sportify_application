@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:sportify_application/screens/Data/models/league_model.dart';
+import 'package:sportify_application/data/models/league_model.dart';
 //import 'dart:convert';
 
 class LeagueApiService {
