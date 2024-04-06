@@ -5,10 +5,10 @@ import '../models/team_model.dart';
 class TeamsApiService {
   static Dio _dio = Dio();
 
-  static Future<List<Team>> fetchTeams(int teamKey) async {
+  static Future<List<Team>> fetchTeams(int leagueId) async {
     try {
       Response response = await _dio.get(
-          "https://apiv2.allsportsapi.com/football/?&met=Teams&teamId=$teamKey&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad");
+          "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=$leagueId&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad");
       if (response.data['success'] == 1) {
         final body = response.data;
         if (body.containsKey('result')) {
