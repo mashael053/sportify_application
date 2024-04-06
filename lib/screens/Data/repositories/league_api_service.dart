@@ -5,10 +5,12 @@ import 'package:sportify_application/screens/Data/models/league_model.dart';
 class LeagueApiService {
   static Dio _dio = Dio();
 
+
   static Future<List<League>> fetchLeagues(String countryId) async {
     try {
       Response response = await _dio.get(
           'https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad&countryId=$countryId');
+
 
       if (response.statusCode == 200) {
         final body = response.data;

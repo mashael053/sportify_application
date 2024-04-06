@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/getPlayer_model.dart';
 import 'package:sportify_application/section2/DrawerScreen.dart';
 import 'package:sportify_application/utils/style.dart';
+import 'package:sportify_application/section2/DrawerScreen.dart';
 import '../widget/player_widget.dart';
 import 'Data/models/team_model.dart';
 
