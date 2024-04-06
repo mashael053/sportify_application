@@ -19,7 +19,6 @@ class Homepage extends StatelessWidget {
     firstName = firstName_user;
     lastName = lastName_user;
     phoneNumber = phoneNumber_user;
-    print("phone $phoneNumber");
     return Scaffold(
       appBar: AppBar(
         title: Text(

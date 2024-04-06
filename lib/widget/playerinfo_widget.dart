@@ -6,8 +6,8 @@ import '../data/models/getPlayer_model.dart';
 import '../data/repositories/getPlayer_repo.dart';
 
 class playerInfo extends StatefulWidget {
-  int player_key;
-  String player_teamKey;
+  String player_key;
+  int player_teamKey;
   playerInfo({required this.player_key, required this.player_teamKey});
   @override
   _playerInfo createState() => _playerInfo();
@@ -31,10 +31,11 @@ class _playerInfo extends State<playerInfo>
     setState(() {
       isLoading = true;
     });
+    print(widget.player_key);
     playerInfo = await GetPlayerRepo().getPlayer(widget.player_key);
     List<PlayerResult> playerList = playerInfo!.result;
     for (var player in playerList) {
-      if (player.teamKey == widget.player_teamKey) {
+      if (int.parse(player.teamKey) == widget.player_teamKey) {
         result_playerInfo = player;
         break;
       }
@@ -108,11 +109,18 @@ class _playerInfo extends State<playerInfo>
                   width: _screensize.width * 0.95,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(result_playerInfo
-                          .playerImage), // Use result_playerInfo directly
-                      fit: BoxFit.contain,
-                    ),
+                    // Use result_playerInfo directly
+                  ),
+                  child: Image.network(
+                    result_playerInfo.playerImage,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      // Handle the error here
+                      print('Image loading error: $exception');
+                      // Return a fallback widget
+                      return Image.asset('assets/player_icon.png');
+                    },
+                    fit: BoxFit.contain,
                   ),
                 ),
                 SizedBox(height: 10),

@@ -1,24 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:sportify_application/screens/Data/models/league_model.dart';
-import 'package:sportify_application/screens/Data/repositories/League_api_service.dart';
+import 'package:sportify_application/screens/Data/repositories/League_repo.dart';
+
+//import 'package:sportify_application/screens/Data/repositories/League_api_service.dart';
 import 'package:sportify_application/screens/top_and_teams_screen.dart';
+import 'package:sportify_application/section2/DrawerScreen.dart';
 
 class LeaguesScreen extends StatefulWidget {
+  final String? countryKey; // Define the countryKey parameter here
+
+  LeaguesScreen({required this.countryKey});
+
   @override
   _LeaguesScreenState createState() => _LeaguesScreenState();
 }
 
 class _LeaguesScreenState extends State<LeaguesScreen> {
   List<League> leagues = [];
+  String d = "";
 
   @override
   void initState() {
     super.initState();
-    fetchLeagues();
+    if (widget.countryKey != null) {
+      fetchLeagues();
+    }
   }
 
   Future<void> fetchLeagues() async {
-    final fetchedLeagues = await LeagueApiService.fetchLeagues();
+    if (widget.countryKey == null) {
+      return;
+    }
+    final fetchedLeagues =
+        await LeagueApiService.fetchLeagues(widget.countryKey!);
+
     setState(() {
       leagues = fetchedLeagues;
     });
@@ -39,22 +54,32 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
       ),
       child: TextButton(
         onPressed: () {
-          Navigator.push(context, 
-          MaterialPageRoute(builder: (context)=>TopAndTeamsScreen(leagueKey:league.leagueKey!),),);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  TopAndTeamsScreen(leagueKey: league.leagueKey!),
+            ),
+          );
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 255, 255)),
+          backgroundColor:
+              MaterialStateProperty.all(Color.fromARGB(255, 255, 255, 255)),
           elevation: MaterialStateProperty.all(0), // Remove default elevation
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))), // Set border shape to sharp edge
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(0))), // Set border shape to sharp edge
         ),
         child: Row(
           children: [
             Image.network(
-              league.leagueLogo ?? '', // Use the league logo URL if available, or an empty string
+              league.leagueLogo ??
+                  '', // Use the league logo URL if available, or an empty string
               width: 50,
               height: 50,
               errorBuilder: (context, error, stackTrace) {
-                return SizedBox(width: 50, height: 50); // Placeholder widget for the image
+                return SizedBox(
+                    width: 50, height: 50); // Placeholder widget for the image
               },
             ),
             SizedBox(width: 20), //  space between the image and the text
@@ -64,7 +89,8 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
                 children: [
                   Text(
                     league.leagueName,
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     league.countryName,
@@ -87,12 +113,13 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
         centerTitle: true,
         backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
       ),
+      drawer: drawer(context),
       body: ListView.builder(
         itemCount: leagues.length,
         itemBuilder: (context, index) {
-          // Skip the first element
           if (index == 0) {
-            return SizedBox.shrink(); // Return an empty SizedBox to skip the first element
+            return SizedBox
+                .shrink(); // Return an empty SizedBox to skip the first element
           }
 
           final league = leagues[index];
