@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:page_view_indicators/page_view_indicators.dart';
 import 'package:sportify_application/screens/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnBoarding extends StatefulWidget {
   @override
@@ -126,26 +127,31 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(
+            height: (screenHeight) * 0.2,
+          ),
           Container(
-            width: 300.0,
-            height: 300.0,
+            width: (screenWidth) * 0.9,
+            height: (screenHeight) * 0.3,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
                 image: AssetImage(image),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           Text(
             title,
-            style: TextStyle(
+            style: GoogleFonts.rubik(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -155,8 +161,8 @@ class OnboardingPage extends StatelessWidget {
           SizedBox(height: 10.0),
           Text(
             description,
-            style: TextStyle(
-              fontSize: 16.0,
+            style: GoogleFonts.rubik(
+              fontSize: 17.0,
               color: Colors.black,
             ),
             textAlign: TextAlign.center,

@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:sportify_application/screens/Data/models/topscorer_model.dart';
+import 'package:dio/dio.dart';
 
 class TopScorersApiService {
   static Dio _dio = Dio();

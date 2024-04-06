@@ -6,8 +6,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final screenHeight = MediaQuery.of(context).size.height;
-    // final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
@@ -18,13 +18,13 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 300,
-          height: 300,
-          padding: const EdgeInsets.all(12),
+          width: (screenWidth) * 0.5,
+          height: (screenHeight) * 0.5,
+          // padding: const EdgeInsets.all(12),
           decoration: const BoxDecoration(
               image: DecorationImage(
             image: AssetImage('assets/sportifyLogo.png'),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           )),
         ),
       ),

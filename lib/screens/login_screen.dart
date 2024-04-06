@@ -1,10 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sportify_application/section2/homePage.dart';
-
 import '../data/global_variables.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,9 +16,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneNumberController = TextEditingController();
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
+  String _selectedCountryCode = '+966';
 
   @override
   Widget build(BuildContext context) {
@@ -28,176 +31,223 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Container(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: (MediaQuery.of(context).size.height) * 1 / 9,
-                ),
-                Image.asset(
-                  'assets/sportifyLogo.png',
-                  height: 190,
-                  width: 180,
-                ),
-                Center(
-                  child: Text(
-                    "Get fit with Sportify!",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: const Color.fromARGB(255, 187, 157, 157)),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: (MediaQuery.of(context).size.height) * 1 / 9,
                   ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                    controller: phoneNumberController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      labelStyle: TextStyle(
-                          fontSize: 14,
-                          backgroundColor: Color.fromARGB(251, 251, 251, 251)),
+                  Image.asset(
+                    'assets/sportifyLogo.png',
+                    height: 180,
+                    width: 170,
+                  ),
+                  Center(
+                    child: Text(
+                      "Get fit with Sportify!",
+                      style: GoogleFonts.rubik(
+                          fontSize: 20, color: Color.fromRGBO(0, 0, 0, 1)),
                     ),
-                    style: TextStyle(fontSize: 14),
                   ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-// Generate and show OTP
-
+                  SizedBox(height: 70),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: CountryCodePicker(
+                          onChanged: (CountryCode countryCode) {
                             setState(() {
-                              generatedOTP = generateOTP();
+                              _selectedCountryCode = countryCode.toString();
                             });
-                            showDialog(
-                              context: context,
-                              builder: (context) => Center(
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                  child: AlertDialog(
-                                    title: Center(child: Text('OTP')),
-                                    content: Center(
-                                      child: Text(generatedOTP,
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
                           },
-                          child: Text('OTP',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black)),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            backgroundColor: Color(0xFFA1C398),
+                          initialSelection:
+                              'SA', // Initial selection (e.g., 'SA' for Saudi Arabia)
+                          favorite: [
+                            '+966'
+                          ], // Optional: Specify favorite country codes
+                          showFlagDialog: true,
+                          padding: EdgeInsets.zero,
+                          textStyle:
+                              TextStyle(fontSize: 18, color: Colors.black),
+                          barrierColor: Colors.white,
+                          boxDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(
+                                color: Colors.black,
+                                width:
+                                    1), // Optional: Show flag dialog for country selection
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: SizedBox(
-                        height: 50,
-                        child: TextField(
-                          controller: otpController,
-                          decoration: InputDecoration(
-                            labelText: 'Enter OTP',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            labelStyle: TextStyle(
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: 50,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Phone Number',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelStyle: TextStyle(
                                 fontSize: 14,
                                 backgroundColor:
-                                    Color.fromARGB(251, 251, 251, 251)),
+                                    Color.fromARGB(251, 251, 251, 251),
+                              ),
+                            ),
+                            style: TextStyle(fontSize: 14),
                           ),
-                          style: TextStyle(fontSize: 18),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: verifyOTP,
-                    child: Text('Verify',
-                        style: TextStyle(fontSize: 16, color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      backgroundColor: Color(0xFFA1C398),
-                    ),
+                    ],
                   ),
-                ),
-                SizedBox(height: (MediaQuery.of(context).size.height) * 0.07),
-                Text(
-                  'Or',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
-                SizedBox(height: 5),
-                Divider(
-                  color: Colors.grey,
-                  indent: 30,
-                  endIndent: 30,
-                ),
-                SizedBox(height: 10),
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final GoogleSignInAccount? googleUser =
-                          await googleSignIn.signIn();
-                      loggedInWithGoogle = true;
-                      if (googleUser != null) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Homepage(
-                              firstName_user:
-                                  googleUser.displayName!.split(" ")[0],
-                              lastName_user:
-                                  googleUser.displayName!.split(" ")[1],
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+// Generate and show OTP
+                              setState(() {
+                                generatedOTP = generateOTP();
+                              });
+                              showDialog(
+                                context: context,
+                                builder: (context) => Center(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                    child: AlertDialog(
+                                      title: Center(
+                                          child: Text(
+                                        'OTP',
+                                        style: TextStyle(
+                                            color: Color(0xFFFA7070),
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                      content: Center(
+                                        child: Text(
+                                          generatedOTP,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text(
+                                            'OK',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text('OTP',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black)),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: Color(0xFFA1C398),
                             ),
                           ),
-                        );
-                      }
-                    },
-                    child: Text('Login with Google',
-                        style: TextStyle(fontSize: 16, color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        side: BorderSide(color: Colors.black),
+                        ),
                       ),
-                      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Enter OTP',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelStyle: TextStyle(
+                                  fontSize: 14,
+                                  backgroundColor:
+                                      Color.fromARGB(251, 251, 251, 251)),
+                            ),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: verifyOTP,
+                      child: Text('Verify',
+                          style: TextStyle(fontSize: 16, color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        backgroundColor: Color(0xFFA1C398),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(height: (MediaQuery.of(context).size.height) * 0.10),
+                  Text(
+                    'Or',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  SizedBox(height: 5),
+                  Divider(
+                    color: Colors.grey,
+                    indent: 30,
+                    endIndent: 30,
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      onPressed: () //_signInWithGoogle,
+                          async {
+                        final GoogleSignInAccount? googleUser =
+                            await googleSignIn.signIn();
+                        loggedInWithGoogle =
+                            true; // Variable to track login method
+                        if (googleUser != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Homepage(),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text('Login with Google',
+                          style: TextStyle(fontSize: 16, color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          side: BorderSide(color: Colors.black),
+                        ),
+                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                    ),
+                  ),
+                ]),
           ),
         ),
       ),
@@ -211,16 +261,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Method to handle OTP verification
   void verifyOTP() {
-    print("what we write ${otpController.text}, what we get $generatedOTP");
-
     if (otpController.text == generatedOTP) {
       // Navigate to home screen if OTP is correct
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Homepage(
-            phoneNumber_user: phoneNumberController.text,
-          ),
+          builder: (context) => Homepage(),
         ),
       );
       print('OTP Verified. Navigate to Home Screen');
@@ -230,15 +276,31 @@ class _LoginScreenState extends State<LoginScreen> {
         context: context,
         builder: (context) => Center(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.5,
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.3,
             child: AlertDialog(
-              title: Text('Error'),
-              content: Text('Incorrect OTP. Please try again.'),
+              title: Center(
+                child: Text(
+                  'Error',
+                  style: TextStyle(
+                      color: Color(0xFFFA7070), fontWeight: FontWeight.bold),
+                ),
+              ),
+              content: Center(
+                  child: Text(
+                'Incorrect OTP. Please try again.',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              )),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('OK'),
+                  child: Text(
+                    'OK',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -247,4 +309,34 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+  // Future<void> _signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await _googleSignIn.signIn();
+  //     if (googleSignInAccount != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleSignInAccount.authentication;
+  //       final AuthCredential credential = GoogleAuthProvider.credential(
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //         idToken: googleSignInAuthentication.idToken,
+  //       );
+  //       final UserCredential userCredential =
+  //           await _auth.signInWithCredential(credential);
+  //       final User? user = userCredential.user;
+
+  //       if (user != null) {
+  //         // Navigate to the home page
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => Homepage(),
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   } catch (error) {
+  //     print('Error signing in with Google: $error');
+  //   }
+  // }
 }
