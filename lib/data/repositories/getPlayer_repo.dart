@@ -5,13 +5,11 @@ import '../models/getPlayer_model.dart';
 class GetPlayerRepo {
   final dio = Dio();
 
-  Future<PlayerModel?> getPlayer(int? playerId) async {
+  Future<PlayerModel?> getPlayer(String? playerId) async {
     Response response;
     response = await dio.get(
-        "https://apiv2.allsportsapi.com/football/?&met=Players&playerId=$playerId&APIkey=f53c5d29e56bd13d8f5c2a245c2d85121a84dfa2940addee3056a8c5649a453a");
-
+        "https://apiv2.allsportsapi.com/football/?&met=Players&playerId=$playerId&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad");
     PlayerModel getPlayer = PlayerModel.fromJson(response.data);
-    print(getPlayer.result);
     return getPlayer;
   }
 }

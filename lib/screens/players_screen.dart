@@ -5,10 +5,11 @@ import 'package:sportify_application/section2/DrawerScreen.dart';
 import 'package:sportify_application/utils/style.dart';
 import 'package:sportify_application/section2/DrawerScreen.dart';
 import '../widget/player_widget.dart';
+import 'Data/models/team_model.dart';
 
 class players_screen extends StatefulWidget {
-  List<Map<String, dynamic>> players;
-  String teamKey;
+  List<Player> players;
+  int teamKey;
   players_screen({super.key, required this.players, required this.teamKey});
 
   @override
@@ -16,7 +17,7 @@ class players_screen extends StatefulWidget {
 }
 
 class _players_screenState extends State<players_screen> {
-  List<Map<String, dynamic>> displayedList = [];
+  List<Player> displayedList = [];
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -34,12 +35,7 @@ class _players_screenState extends State<players_screen> {
     } else {
       setState(() {
         for (var player in widget.players) {
-          print(player);
-
-          if (player["player_name"]
-              .toLowerCase()
-              .contains(query.toLowerCase())) {
-            print(player["player_name"]);
+          if (player.playerName.toLowerCase().contains(query.toLowerCase())) {
             displayedList.clear();
             displayedList.add(player);
           }
@@ -53,10 +49,15 @@ class _players_screenState extends State<players_screen> {
     var _screen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 161, 195, 152)),
-      drawer: Drawer(
-        child: drawer(context),
+      appBar: AppBar(
+        title: Text(
+          'Sportify',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xFFA1C398),
       ),
+      drawer: drawer(context),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -100,10 +101,10 @@ class _players_screenState extends State<players_screen> {
               players(
                   _screen,
                   context,
-                  displayedList[i]["player_image"],
-                  displayedList[i]["player_name"],
-                  displayedList[i]["player_type"],
-                  displayedList[i]["player_key"],
+                  displayedList[i].playerImage,
+                  displayedList[i].playerName,
+                  displayedList[i].playerType,
+                  displayedList[i].playerKey,
                   widget.teamKey),
           ],
         ),

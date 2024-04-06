@@ -1,32 +1,35 @@
 import 'package:dio/dio.dart';
-import 'package:sportify_application/screens/Data/models/team_model.dart';
+
+import '../models/team_model.dart';
 
 class TeamsApiService {
   static Dio _dio = Dio();
 
-  static Future<List<Team>> fetchTeams(int leagueId) async {
+  static Future<List<Team>> fetchTeams(int teamKey) async {
     try {
       Response response = await _dio.get(
-        'https://apiv2.allsportsapi.com/football/?met=Teams&leagueId=$leagueId&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad',
-      );
-
-      if (response.statusCode == 200) {
+          "https://apiv2.allsportsapi.com/football/?&met=Teams&teamId=$teamKey&APIkey=37b8927045369ddb6e0c484d1bbf164f8c0b7643e64d402f50c8608d75ce39ad");
+      if (response.data['success'] == 1) {
         final body = response.data;
-        if (body['success'] == 1) {
-          List<dynamic> teamsData = body['result'];
-          List<Team> teams = teamsData
-              .map((teamData) => Team.fromJson(teamData))
-              .toList();
-          return teams;
+        if (body.containsKey('result')) {
+          List<dynamic> teamData = body['result'];
+
+          if (teamData.isEmpty) {
+            return [];
+          }
+
+          List<Team> team =
+              teamData.map((teamData) => Team.fromJson(teamData)).toList();
+          return team;
         } else {
-          throw Exception('API request failed: ${body['error']}');
+          return [];
         }
       } else {
-        throw Exception('Failed to load teams: ${response.statusCode}');
+        throw Exception('Failed to load top scorers: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching teams: $e');
-      throw Exception('Failed to load teams');
+      print('Error fetching top scorers: $e');
+      throw Exception('Failed to load top scorers');
     }
   }
 }

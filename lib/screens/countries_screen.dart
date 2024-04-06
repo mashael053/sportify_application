@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sportify_application/data/models/countries_model.dart';
 import 'package:sportify_application/data/repositories/country_api_servie.dart';
 import 'package:sportify_application/screens/leagues_screen.dart';
@@ -37,23 +38,18 @@ class _CountriesScreenState extends State<CountriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Sportify',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text('Sportify'),
         backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
         centerTitle: true,
       ),
-      drawer: Drawer(
-        child: drawer(context),
-      ),
+      drawer: drawer(context),
       body: Column(
         children: [
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
                 ClipRRect(
@@ -82,24 +78,29 @@ class _CountriesScreenState extends State<CountriesScreen> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 8,
           ),
           Container(
             height: 60,
-            width: 320,
+            width: MediaQuery.of(context).size.width * 0.95,
             child: TextField(
+              style: GoogleFonts.poppins(fontSize: 15),
               decoration: InputDecoration(
                 labelText: 'Search for a country',
                 suffixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.only(bottom: 8, left: 20, top: 8),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black38),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(15),
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: 8,
           ),
           Expanded(
             child: GridView.builder(
@@ -119,7 +120,8 @@ class _CountriesScreenState extends State<CountriesScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LeaguesScreen(),
+                        builder: (context) =>
+                            LeaguesScreen(countryKey: country.countryKey),
                       ),
                     );
                   },

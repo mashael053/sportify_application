@@ -6,11 +6,13 @@ import 'package:sportify_application/screens/Data/repositories/team_api_service.
 import 'package:sportify_application/screens/Data/repositories/top_scorers_api_service.dart';
 import 'package:sportify_application/screens/widgets/teams_screen.dart';
 import 'package:sportify_application/screens/widgets/top_scorers_screen.dart';
+import 'package:sportify_application/section2/DrawerScreen.dart';
 
 class TopAndTeamsScreen extends StatefulWidget {
   final int leagueKey; // Define the leagueKey parameter here
 
-  TopAndTeamsScreen({required this.leagueKey}); // Add the leagueKey parameter to the constructor
+  TopAndTeamsScreen(
+      {required this.leagueKey}); // Add the leagueKey parameter to the constructor
 
   @override
   _TopAndTeamsScreenState createState() => _TopAndTeamsScreenState();
@@ -23,7 +25,7 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
   @override
   void initState() {
     super.initState();
-    _teamsFuture = TeamsApiService.fetchTeams(widget.leagueKey);
+    _teamsFuture = TeamsApiService.fetchTeams(widget.leagueKey.toInt());
     _topScorersFuture = TopScorersApiService.fetchTopScorers(widget.leagueKey);
   }
 
@@ -33,11 +35,14 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title:Text('Sportify',style: TextStyle(fontWeight:FontWeight.bold),),
-        centerTitle: true,
-        backgroundColor: Color(0xFFA1C398), 
+          title: Text(
+            'Sportify',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFFA1C398),
           bottom: TabBar(
-            indicatorColor: Colors.black, 
+            indicatorColor: Colors.black,
             labelColor: Colors.white,
             tabs: [
               Tab(text: 'Teams'),
@@ -45,10 +50,11 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
             ],
           ),
         ),
+        drawer: drawer(context),
         body: TabBarView(
           children: [
             TeamsScreen(leagueId: widget.leagueKey, teamsFuture: _teamsFuture),
-            TopScorersScreen(leagueId: widget.leagueKey, topScorersFuture: _topScorersFuture),
+            TopScorersScreen(leagueId: widget.leagueKey),
           ],
         ),
       ),
