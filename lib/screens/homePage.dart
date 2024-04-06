@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sportify_application/screens/countries_screen.dart';
 import 'package:sportify_application/data/global_variables.dart';
-import 'package:sportify_application/section2/DrawerScreen.dart';
+import 'package:sportify_application/widget/DrawerScreen.dart';
 
 class Homepage extends StatelessWidget {
   String? firstName_user;

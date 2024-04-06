@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/Data/models/league_model.dart';
-import 'package:sportify_application/screens/Data/repositories/League_repo.dart';
+import 'package:sportify_application/data/models/league_model.dart';
+import 'package:sportify_application/data/repositories/League_repo.dart';
 
 //import 'package:sportify_application/screens/Data/repositories/League_api_service.dart';
 import 'package:sportify_application/screens/top_and_teams_screen.dart';
-import 'package:sportify_application/section2/DrawerScreen.dart';
+import 'package:sportify_application/widget/DrawerScreen.dart';
 
 class LeaguesScreen extends StatefulWidget {
   final String? countryKey; // Define the countryKey parameter here
