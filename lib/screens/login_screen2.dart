@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,20 +8,44 @@ import '../data/global_variables.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class loglog extends StatefulWidget {
+  const loglog({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<loglog> createState() => _loglogScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _loglogScreenState extends State<loglog> {
   TextEditingController phoneNumberController = TextEditingController();
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
   String _selectedCountryCode = '+966';
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? _user;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {
+        _user = event;
+      });
+    });
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      // Handle sign-out errors
+      print('Error signing out: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,17 +252,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: () //_signInWithGoogle,
                           async {
-                        final GoogleSignInAccount? googleUser =
-                            await googleSignIn.signIn();
-                        loggedInWithGoogle =
-                            true; // Variable to track login method
-                        if (googleUser != null) {
+                        _handleGoogleSignIn();
+
+                        if (_user != null) {
+                          print(
+                              "THis is the name ${_user!.providerData[0].displayName}");
+                          print(_user!.displayName);
+                          loggedInWithGoogle = true;
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Homepage(
-                                  firstName_user: firstName,
-                                  lastName_user: lastName,
+                                  firstName_user: _user!.displayName,
+                                  lastName_user: _user!.displayName,
                                   phoneNumber_user: ""),
                             ),
                           );
@@ -322,6 +349,15 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _handleGoogleSignIn() {
+    try {
+      GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
+      _auth.signInWithProvider(_googleAuthProvider);
+    } catch (error) {
+      print(error);
+    }
+  }
+}
   // Future<void> _signInWithGoogle() async {
   //   try {
   //     final GoogleSignInAccount? googleSignInAccount =
@@ -351,4 +387,4 @@ class _LoginScreenState extends State<LoginScreen> {
   //     print('Error signing in with Google: $error');
   //   }
   // }
-}
+

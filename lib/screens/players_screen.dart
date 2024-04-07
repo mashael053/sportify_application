@@ -47,68 +47,69 @@ class _players_screenState extends State<players_screen> {
   @override
   Widget build(BuildContext context) {
     var _screen = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'Sportify',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFFA1C398),
-      ),
-      drawer: drawer(context),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: searchController,
-                  textAlignVertical: TextAlignVertical.center,
-                  cursorColor: Colors.black,
-                  style: GoogleFonts.poppins(fontSize: 15),
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.only(bottom: 8, left: 20, top: 8),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        searchController.clear();
-                        filterList('');
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 70,
+            title: Text(
+              'Sportify',
+              style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
+            ),
+            backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
+            centerTitle: true,
+          ),
+          drawer: drawer(context),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      controller: searchController,
+                      textAlignVertical: TextAlignVertical.center,
+                      cursorColor: Colors.black,
+                      style: GoogleFonts.poppins(fontSize: 15),
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.only(bottom: 8, left: 20, top: 8),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            filterList('');
+                          },
+                        ),
+                        hintText: 'Search for a player',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                      ),
+                      onEditingComplete: () {
+                        filterList(searchController.text);
+                        // Calling function to search in API
                       },
                     ),
-                    hintText: 'Search for a player',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
                   ),
-                  onEditingComplete: () {
-                    filterList(searchController.text);
-                    // Calling function to search in API
-                  },
                 ),
-              ),
+                for (int i = 0; i < displayedList.length; i++)
+                  players(
+                      _screen,
+                      context,
+                      displayedList[i].playerImage,
+                      displayedList[i].playerName,
+                      displayedList[i].playerType,
+                      displayedList[i].playerKey,
+                      widget.teamKey),
+              ],
             ),
-            for (int i = 0; i < displayedList.length; i++)
-              players(
-                  _screen,
-                  context,
-                  displayedList[i].playerImage,
-                  displayedList[i].playerName,
-                  displayedList[i].playerType,
-                  displayedList[i].playerKey,
-                  widget.teamKey),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

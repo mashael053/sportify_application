@@ -1,4 +1,3 @@
-// lib/screens/top_and_teams_screen.dart
 import 'package:flutter/material.dart';
 import 'package:sportify_application/data/models/team_model.dart';
 import 'package:sportify_application/data/models/topscorer_model.dart';
@@ -18,30 +17,44 @@ class TopAndTeamsScreen extends StatefulWidget {
   _TopAndTeamsScreenState createState() => _TopAndTeamsScreenState();
 }
 
-class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
+class _TopAndTeamsScreenState extends State<TopAndTeamsScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   late Future<List<Team>> _teamsFuture;
   late Future<List<TopScorer>> _topScorersFuture;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _teamsFuture = TeamsApiService.fetchTeams(widget.leagueKey.toInt());
     _topScorersFuture = TopScorersApiService.fetchTopScorers(widget.leagueKey);
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
+    double statusBarHeight = MediaQuery.of(context).padding.top;
+
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 70,
           title: Text(
             'Sportify',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
           ),
+          backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
           centerTitle: true,
-          backgroundColor: Color(0xFFA1C398),
+
           bottom: TabBar(
+            controller: _tabController,
             indicatorColor: Colors.black,
             labelColor: Colors.white,
             tabs: [
@@ -52,8 +65,12 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen> {
         ),
         drawer: drawer(context),
         body: TabBarView(
+          controller: _tabController,
           children: [
-            TeamsScreen(leagueId: widget.leagueKey, teamsFuture: _teamsFuture),
+            TeamsScreen(
+              leagueId: widget.leagueKey,
+              teamsFuture: _teamsFuture,
+            ),
             TopScorersScreen(leagueId: widget.leagueKey),
           ],
         ),
