@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sportify_application/data/global_variables.dart';
 import 'package:sportify_application/screens/login_screen.dart';
 import 'package:sportify_application/utils/style.dart';
+import 'package:sportify_application/screens/login_screen2.dart';
 
 Widget drawer(BuildContext context) {
   Widget profile = Text("");
@@ -54,8 +55,10 @@ Widget drawer(BuildContext context) {
             padding: EdgeInsets.all(13.0),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
               },
               child: Text('Log Out', style: text_style1),
               style: ElevatedButton.styleFrom(
