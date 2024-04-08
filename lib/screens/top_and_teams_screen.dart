@@ -8,10 +8,9 @@ import 'package:sportify_application/screens/top_scorers_screen.dart';
 import 'package:sportify_application/widget/DrawerScreen.dart';
 
 class TopAndTeamsScreen extends StatefulWidget {
-  final int leagueKey; // Define the leagueKey parameter here
+  final int leagueKey;
 
-  TopAndTeamsScreen(
-      {required this.leagueKey}); // Add the leagueKey parameter to the constructor
+  TopAndTeamsScreen({required this.leagueKey});
 
   @override
   _TopAndTeamsScreenState createState() => _TopAndTeamsScreenState();
@@ -41,30 +40,29 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen>
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 70,
-          title: Text(
-            'Sportify',
-            style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
-          ),
-          backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
-          centerTitle: true,
-
-          bottom: TabBar(
-            controller: _tabController,
-            indicatorColor: Colors.black,
-            labelColor: Colors.white,
-            tabs: [
-              Tab(text: 'Teams'),
-              Tab(text: 'Top Scorers'),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 100,
+        title: Text(
+          'Sportify',
+          style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
         ),
-        drawer: drawer(),
-        body: TabBarView(
+        backgroundColor: Color(0xFFA1C398),
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.black,
+          labelColor: Colors.white,
+          tabs: [
+            Tab(text: 'Teams'),
+            Tab(text: 'Top Scorers'),
+          ],
+        ),
+      ),
+      drawer: drawer(),
+      body: Padding(
+        padding: EdgeInsets.only(top: statusBarHeight),
+        child: TabBarView(
           controller: _tabController,
           children: [
             TeamsScreen(

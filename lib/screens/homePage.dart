@@ -40,7 +40,7 @@ class Homepage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 20,
+              height: 60,
             ),
             Container(
               padding: EdgeInsets.all(16),
@@ -54,7 +54,7 @@ class Homepage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 35,
+              height: 70,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
@@ -111,7 +111,9 @@ class Homepage extends StatelessWidget {
                                     'OK',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        ),
                                   ),
                                 ),
                               ],
@@ -163,7 +165,8 @@ class Homepage extends StatelessWidget {
                                     'OK',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        fontSize: 18,
+                                        color: Colors.black,),
                                   ),
                                 ),
                               ],
@@ -208,7 +211,8 @@ class Homepage extends StatelessWidget {
                                     'OK',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        fontSize: 18,
+                                        color: Colors.black,),
                                   ),
                                 ),
                               ],

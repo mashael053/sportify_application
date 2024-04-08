@@ -93,6 +93,7 @@ class _loglogScreenState extends State<loginScreen> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               labelStyle: TextStyle(
+                                color:Color.fromARGB(255, 8, 8, 8),
                                 fontSize: 14,
                                 backgroundColor:
                                     Color.fromARGB(251, 251, 251, 251),
@@ -182,6 +183,7 @@ class _loglogScreenState extends State<loginScreen> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               labelStyle: TextStyle(
+                             color:Color.fromARGB(255, 8, 8, 8),
                                   fontSize: 14,
                                   backgroundColor:
                                       Color.fromARGB(251, 251, 251, 251)),
@@ -197,6 +199,7 @@ class _loglogScreenState extends State<loginScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
+                        
                         verifyOTP();
                       },
                       child: Text('Verify',
