@@ -1,26 +1,26 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sportify_application/screens/homePage.dart';
 import '../data/global_variables.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class loginScreen extends StatefulWidget {
+  const loginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<loginScreen> createState() => _loglogScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _loglogScreenState extends State<loginScreen> {
   TextEditingController phoneNumberController = TextEditingController();
-  final GoogleSignIn googleSignIn = GoogleSignIn();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
   String _selectedCountryCode = '+966';
+
+  late GoogleSignInAccount _user;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 20, color: Color.fromRGBO(0, 0, 0, 1)),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 40),
                   Row(
                     children: [
                       Expanded(
@@ -60,16 +60,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               _selectedCountryCode = countryCode.toString();
                             });
                           },
-                          initialSelection: 'SA',
-                          favorite: ['+966'],
+                          initialSelection:
+                              'SA', // Initial selection (e.g., 'SA' for Saudi Arabia)
+                          favorite: [
+                            '+966'
+                          ], // Optional: Specify favorite country codes
                           showFlagDialog: true,
                           padding: EdgeInsets.zero,
-                          textStyle: TextStyle(fontSize: 18, color: Colors.black),
+                          textStyle:
+                              TextStyle(fontSize: 18, color: Colors.black),
                           barrierColor: Colors.white,
                           boxDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.0),
                             border: Border.all(
-                                color: Colors.black, width: 1),
+                                color: Colors.black,
+                                width:
+                                    1), // Optional: Show flag dialog for country selection
                           ),
                         ),
                       ),
@@ -86,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               labelStyle: TextStyle(
+                                color: Color.fromARGB(255, 8, 8, 8),
                                 fontSize: 14,
                                 backgroundColor:
                                     Color.fromARGB(251, 251, 251, 251),
@@ -175,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               labelStyle: TextStyle(
+                                  color: Color.fromARGB(255, 8, 8, 8),
                                   fontSize: 14,
                                   backgroundColor:
                                       Color.fromARGB(251, 251, 251, 251)),
@@ -189,10 +197,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: phoneNumberController.text.isNotEmpty &&
-                              otpController.text.isNotEmpty
-                          ? verifyOTP
-                          : null,
+                      onPressed: () {
+                        verifyOTP();
+                      },
                       child: Text('Verify',
                           style: TextStyle(fontSize: 16, color: Colors.black)),
                       style: ElevatedButton.styleFrom(
@@ -220,21 +227,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 50,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final GoogleSignInAccount? googleUser =
-                            await googleSignIn.signIn();
-                        loggedInWithGoogle = true;
-                        if (googleUser != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Homepage(
-                                  firstName_user: firstName,
-                                  lastName_user: lastName,
-                                  phoneNumber_user: ""),
-                            ),
-                          );
-                        }
+                      onPressed: () {
+                        _signInWithGoogle();
                       },
                       child: Text('Login with Google',
                           style: TextStyle(fontSize: 16, color: Colors.black)),
@@ -259,12 +253,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return (1000 + random.nextInt(9000)).toString();
   }
 
+  // Method to handle OTP verification
   void verifyOTP() {
     print(
         "input value ${otpController.text} what the function generate $generatedOTP");
     if (otpController.text == generatedOTP) {
+      // Navigate to home screen if OTP is correct
+      print("input ${phoneNumberController.text}, text $phoneNumber ??");
       phoneNumber = phoneNumberController.text;
-      otpController.clear(); // Clear OTP field
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -276,6 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       print('OTP Verified. Navigate to Home Screen');
     } else {
+      // Show error message if OTP is incorrect
       showDialog(
         context: context,
         builder: (context) => Center(
@@ -312,34 +309,33 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<String?> _signInWithGoogle() async {
+    try {
+      await GoogleSignIn().signIn().then(
+        (value) {
+          _user = value!;
+        },
+      );
+      if (_user != null) {
+        print('Signed in with Google: ${_user.displayName}');
+        List<String> nameParts =
+            _user.displayName!.split(' '); // Split by space
 
-  // Future<void> _signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleSignInAccount =
-  //         await _googleSignIn.signIn();
-  //     if (googleSignInAccount != null) {
-  //       final GoogleSignInAuthentication googleSignInAuthentication =
-  //           await googleSignInAccount.authentication;
-  //       final AuthCredential credential = GoogleAuthProvider.credential(
-  //         accessToken: googleSignInAuthentication.accessToken,
-  //         idToken: googleSignInAuthentication.idToken,
-  //       );
-  //       final UserCredential userCredential =
-  //           await _auth.signInWithCredential(credential);
-  //       final User? user = userCredential.user;
-
-  //       if (user != null) {
-  //         // Navigate to the home page
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => Homepage(),
-  //           ),
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     print('Error signing in with Google: $error');
-  //   }
-  // }
+        if (_user != null) {
+          loggedInWithGoogle = true;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(
+                  firstName_user: nameParts[0],
+                  lastName_user: nameParts.length > 1 ? nameParts[1] : '',
+                  phoneNumber_user: ""),
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      print('Error signing in with Google: $error');
+    }
+  }
 }
