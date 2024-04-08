@@ -65,7 +65,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
           backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
           centerTitle: true,
         ),
-        drawer: drawer(context),
+        drawer: drawer(),
         body: Column(
           children: [
             SizedBox(

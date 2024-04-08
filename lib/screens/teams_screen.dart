@@ -47,8 +47,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            players_screen(players: players, teamKey: teamKey),
+        builder: (context) => PlayersScreen(players: players, teamKey: teamKey),
       ),
     );
   }

@@ -8,44 +8,20 @@ import '../data/global_variables.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
-class loglog extends StatefulWidget {
-  const loglog({Key? key}) : super(key: key);
+class loginScreen extends StatefulWidget {
+  const loginScreen({Key? key}) : super(key: key);
 
   @override
-  State<loglog> createState() => _loglogScreenState();
+  State<loginScreen> createState() => _loglogScreenState();
 }
 
-class _loglogScreenState extends State<loglog> {
+class _loglogScreenState extends State<loginScreen> {
   TextEditingController phoneNumberController = TextEditingController();
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
   TextEditingController otpController = TextEditingController();
   String generatedOTP = '';
   String _selectedCountryCode = '+966';
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  User? _user;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _auth.authStateChanges().listen((event) {
-      setState(() {
-        _user = event;
-      });
-    });
-  }
-
-  Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      // Handle sign-out errors
-      print('Error signing out: $e');
-    }
-  }
+  late GoogleSignInAccount _user;
 
   @override
   Widget build(BuildContext context) {
@@ -250,25 +226,8 @@ class _loglogScreenState extends State<loglog> {
                     height: 50,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () //_signInWithGoogle,
-                          async {
-                        _handleGoogleSignIn();
-
-                        if (_user != null) {
-                          print(
-                              "THis is the name ${_user!.providerData[0].displayName}");
-                          print(_user!.displayName);
-                          loggedInWithGoogle = true;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Homepage(
-                                  firstName_user: _user!.displayName,
-                                  lastName_user: _user!.displayName,
-                                  phoneNumber_user: ""),
-                            ),
-                          );
-                        }
+                      onPressed: () {
+                        _signInWithGoogle();
                       },
                       child: Text('Login with Google',
                           style: TextStyle(fontSize: 16, color: Colors.black)),
@@ -349,42 +308,33 @@ class _loglogScreenState extends State<loglog> {
     }
   }
 
-  void _handleGoogleSignIn() {
+  Future<String?> _signInWithGoogle() async {
     try {
-      GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
-      _auth.signInWithProvider(_googleAuthProvider);
+      await GoogleSignIn().signIn().then(
+        (value) {
+          _user = value!;
+        },
+      );
+      if (_user != null) {
+        print('Signed in with Google: ${_user.displayName}');
+        List<String> nameParts =
+            _user.displayName!.split(' '); // Split by space
+
+        if (_user != null) {
+          loggedInWithGoogle = true;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(
+                  firstName_user: nameParts[0],
+                  lastName_user: nameParts.length > 1 ? nameParts[1] : '',
+                  phoneNumber_user: ""),
+            ),
+          );
+        }
+      }
     } catch (error) {
-      print(error);
+      print('Error signing in with Google: $error');
     }
   }
 }
-  // Future<void> _signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleSignInAccount =
-  //         await _googleSignIn.signIn();
-  //     if (googleSignInAccount != null) {
-  //       final GoogleSignInAuthentication googleSignInAuthentication =
-  //           await googleSignInAccount.authentication;
-  //       final AuthCredential credential = GoogleAuthProvider.credential(
-  //         accessToken: googleSignInAuthentication.accessToken,
-  //         idToken: googleSignInAuthentication.idToken,
-  //       );
-  //       final UserCredential userCredential =
-  //           await _auth.signInWithCredential(credential);
-  //       final User? user = userCredential.user;
-
-  //       if (user != null) {
-  //         // Navigate to the home page
-  //         Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => Homepage(),
-  //           ),
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     print('Error signing in with Google: $error');
-  //   }
-  // }
-

@@ -34,7 +34,7 @@ class Homepage extends StatelessWidget {
           centerTitle: true,
         ),
         drawer: Drawer(
-          child: drawer(context),
+          child: drawer(),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

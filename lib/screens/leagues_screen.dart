@@ -126,7 +126,7 @@ class _LeaguesScreenState extends State<LeaguesScreen> {
           backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
           centerTitle: true,
         ),
-        drawer: drawer(context),
+        drawer: drawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
