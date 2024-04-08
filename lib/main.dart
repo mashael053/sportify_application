@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sportify_application/screens/login_screen.dart';
+import 'package:sportify_application/screens/login_screen_old.dart';
 import 'package:sportify_application/screens/login_screen2.dart';
 import 'package:sportify_application/screens/onboarding_screen.dart';
 import 'package:sportify_application/screens/players_screen.dart';
@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
+      //SplashScreen(),
     );
   }
 }

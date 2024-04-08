@@ -1,29 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sportify_application/data/models/getPlayer_model.dart';
 import 'package:sportify_application/widget/DrawerScreen.dart';
-import 'package:sportify_application/utils/style.dart';
-import 'package:sportify_application/widget/DrawerScreen.dart';
-import '../widget/player_widget.dart';
-import '../data/models/team_model.dart';
+import 'package:sportify_application/widget/player_widget.dart';
+import 'package:sportify_application/data/models/team_model.dart';
 
-class players_screen extends StatefulWidget {
-  List<Player> players;
-  int teamKey;
-  players_screen({super.key, required this.players, required this.teamKey});
+class PlayersScreen extends StatefulWidget {
+  final List<Player> players;
+  final int teamKey;
+
+  const PlayersScreen({Key? key, required this.players, required this.teamKey})
+      : super(key: key);
 
   @override
-  State<players_screen> createState() => _players_screenState();
+  State<PlayersScreen> createState() => _PlayersScreenState();
 }
 
-class _players_screenState extends State<players_screen> {
+class _PlayersScreenState extends State<PlayersScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   List<Player> displayedList = [];
   TextEditingController searchController = TextEditingController();
-
+  late final Animation<double> _animation;
   @override
   void initState() {
     super.initState();
     displayedList = List.from(widget.players); // Start with the original list
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void filterList(String query) {
@@ -34,10 +49,10 @@ class _players_screenState extends State<players_screen> {
       });
     } else {
       setState(() {
+        displayedList.clear(); // Clear the displayed list before filtering
         for (var player in widget.players) {
           if (player.playerName.toLowerCase().contains(query.toLowerCase())) {
-            displayedList.clear();
-            displayedList.add(player);
+            displayedList.add(player); // Add filtered players to displayedList
           }
         }
       });
@@ -49,67 +64,77 @@ class _players_screenState extends State<players_screen> {
     var _screen = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 70,
-            title: Text(
-              'Sportify',
-              style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
-            ),
-            backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
-            centerTitle: true,
+        appBar: AppBar(
+          toolbarHeight: 70,
+          title: Text(
+            'Sportify',
+            style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
           ),
-          drawer: drawer(context),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      controller: searchController,
-                      textAlignVertical: TextAlignVertical.center,
-                      cursorColor: Colors.black,
-                      style: GoogleFonts.poppins(fontSize: 15),
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.only(bottom: 8, left: 20, top: 8),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: () {
-                            searchController.clear();
-                            filterList('');
-                          },
-                        ),
-                        hintText: 'Search for a player',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
+          backgroundColor: Color(0xFFA1C398),
+          centerTitle: true,
+        ),
+        drawer: drawer(),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: searchController,
+                    textAlignVertical: TextAlignVertical.center,
+                    cursorColor: Colors.black,
+                    style: TextStyle(fontSize: 15),
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.only(bottom: 8, left: 20, top: 8),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          searchController.clear();
+                          filterList('');
+                        },
                       ),
-                      onEditingComplete: () {
-                        filterList(searchController.text);
-                        // Calling function to search in API
-                      },
+                      hintText: 'Search for a player',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
                     ),
+                    onEditingComplete: () {
+                      filterList(searchController.text);
+                    },
                   ),
                 ),
-                for (int i = 0; i < displayedList.length; i++)
-                  players(
-                      _screen,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: displayedList.length,
+                itemBuilder: (context, index) {
+                  return FadeTransition(
+                    opacity: _animation,
+                    child: players(
+                      MediaQuery.of(context).size,
                       context,
-                      displayedList[i].playerImage,
-                      displayedList[i].playerName,
-                      displayedList[i].playerType,
-                      displayedList[i].playerKey,
-                      widget.teamKey),
-              ],
-            ),
-          )),
+                      displayedList[index].playerImage,
+                      displayedList[index].playerName,
+                      displayedList[index].playerType,
+                      displayedList[index].playerKey,
+                      widget.teamKey,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -63,7 +63,7 @@ class _TopAndTeamsScreenState extends State<TopAndTeamsScreen>
             ],
           ),
         ),
-        drawer: drawer(context),
+        drawer: drawer(),
         body: TabBarView(
           controller: _tabController,
           children: [
