@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sportify_application/data/global_variables.dart';
-import 'package:sportify_application/screens/login_screen_old.dart';
-import 'package:sportify_application/screens/login_screen2.dart';
+import 'package:sportify_application/screens/login_screen.dart';
 import 'package:sportify_application/utils/style.dart';
 
 class drawer extends StatelessWidget {

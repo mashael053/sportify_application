@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:page_view_indicators/page_view_indicators.dart';
-import 'package:sportify_application/screens/login_screen2.dart';
-import 'package:sportify_application/screens/login_screen_old.dart';
+import 'package:sportify_application/screens/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OnBoarding extends StatefulWidget {
