@@ -4,6 +4,8 @@ import 'package:sportify_application/data/models/countries_model.dart';
 import 'package:sportify_application/data/repositories/country_api_servie.dart';
 import 'package:sportify_application/screens/leagues_screen.dart';
 import 'package:sportify_application/widget/DrawerScreen.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class CountriesScreen extends StatefulWidget {
   @override
@@ -11,11 +13,69 @@ class CountriesScreen extends StatefulWidget {
 }
 
 class _CountriesScreenState extends State<CountriesScreen> {
+  String? countryLocation;
   List<Country> countries = [];
   int? currentCountryIndex;
   final ScrollController _scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
   List<Country> allCountries = [];
+
+  void getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      print('Location services are disabled.');
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      print('Location permissions are permanently denied, we cannot request permissions.');
+      return;
+    }
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+        print('Location permissions are denied (actual value: $permission).');
+        return;
+      }
+    }
+
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      Placemark place = placemarks[0];
+
+      setState(() {
+        countryLocation = place.country;
+
+        // Scroll to the country's location
+        int index = countries.indexWhere((country) => country.countryName == countryLocation);
+        if (index != -1) {
+          int row = index ~/ 3; // Assuming 3 columns in the GridView
+          double itemHeight = (MediaQuery.of(context).size.width * 0.95) / 3; // Calculate item height based on GridView width
+          double offset = row * itemHeight;
+          _scrollController.animateTo(
+            offset,
+            duration: Duration(seconds: 1),
+            curve: Curves.easeInOut,
+          );
+          currentCountryIndex = index;
+        }
+      });
+      print(countryLocation);
+    } catch (e) {
+      print('Error while fetching location: $e');
+    }
+  }
 
   @override
   void initState() {
@@ -34,15 +94,13 @@ class _CountriesScreenState extends State<CountriesScreen> {
       });
     } catch (e) {
       print('Failed to fetch countries: $e');
-      // Handle error
     }
   }
 
   void _onSearchTextChanged() {
     String searchText = _searchController.text.toLowerCase();
     List<Country> filteredCountries = searchText.isEmpty
-        ? List.of(
-            allCountries) // Use the unfiltered list if search text is empty
+        ? List.of(allCountries) // Use the unfiltered list if search text is empty
         : allCountries.where((country) {
             return country.countryName.toLowerCase().contains(searchText);
           }).toList();
@@ -62,7 +120,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
             'Sportify',
             style: TextStyle(color: Colors.black, fontFamily: "SportsWorld"),
           ),
-          backgroundColor: Color(0xFFA1C398), // Set AppBar color to A1C398
+          backgroundColor: Color(0xFFA1C398),
           centerTitle: true,
         ),
         drawer: drawer(),
@@ -73,31 +131,36 @@ class _CountriesScreenState extends State<CountriesScreen> {
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(13),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      color: const Color.fromARGB(45, 158, 158, 158),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Color(0xFFA1C398),
+              child: GestureDetector(
+                onTap: getCurrentLocation,
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: const Color.fromARGB(45, 158, 158, 158),
+                        child: Icon(
+                          Icons.location_on,
+                          color: Color(0xFFA1C398),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'Riyadh, Saudi Arabia',
-                      style: GoogleFonts.getFont("Rubik",
+                    SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        ' ${countryLocation ?? ''}',
+                        style: GoogleFonts.getFont(
+                          "Rubik",
                           fontSize: 14,
                           color: Color.fromARGB(255, 0, 0, 0),
-                          fontWeight: FontWeight.normal),
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -153,7 +216,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: isCurrentCountry ? Color(0xFFC6EBC5) : Colors.white, // Change the color based on the current country
                         borderRadius: BorderRadius.circular(10.0),
                         boxShadow: [
                           BoxShadow(
@@ -203,3 +266,4 @@ class _CountriesScreenState extends State<CountriesScreen> {
     );
   }
 }
+
